@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "小智")
+@Tag(name = "小包")
 @RestController
-@RequestMapping
+@RequestMapping("/api")
 @Slf4j
 public class XiaoBaoController {
     @Autowired
@@ -23,6 +23,7 @@ public class XiaoBaoController {
     @Operation(summary = "对话")
     @PostMapping("/chat")
     public String chat(@RequestBody ChatForm chatForm){
+        log.info("开启对话");
         return xiaoBaoAgent.chat(chatForm.getMemoryId(),chatForm.getMessage());
 
     }

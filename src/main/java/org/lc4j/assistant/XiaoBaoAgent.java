@@ -1,5 +1,6 @@
 package org.lc4j.assistant;
 
+import dev.langchain4j.agent.tool.Tool;
 import dev.langchain4j.service.MemoryId;
 import dev.langchain4j.service.SystemMessage;
 import dev.langchain4j.service.UserMessage;
@@ -10,7 +11,9 @@ import static dev.langchain4j.service.spring.AiServiceWiringMode.EXPLICIT;
 @AiService(
         wiringMode = EXPLICIT,
         chatModel = "qwenChatModel",  // 用 DashScope 自动创建的 bean
-        chatMemoryProvider = "chatMemoryProviderXiaoBao")
+        chatMemoryProvider = "chatMemoryProviderXiaoBao",
+        tools = "AppointmentTools" )
+
 public interface XiaoBaoAgent {
 
     @SystemMessage(fromResource = "xiaobao-prompt.txt")
