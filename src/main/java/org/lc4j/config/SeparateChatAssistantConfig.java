@@ -17,13 +17,13 @@ public class SeparateChatAssistantConfig {
      * 隔离聊天记忆
      * @return
      */
-    @Bean
-    public ChatMemoryProvider chatMemoryProvider() {
-        return memoryId -> MessageWindowChatMemory
-                .builder()
-                .id(memoryId)
-                .maxMessages(10)
-                .chatMemoryStore(mongoChatMemoryStore)
-                .build();
-    }
+//    @Bean
+//    public ChatMemoryProvider chatMemoryProvider() {
+//        return memoryId -> MessageWindowChatMemory
+//                .builder()
+//                .id(memoryId)
+//                .maxMessages(10)
+//                .chatMemoryStore(mongoChatMemoryStore)
+//                .build();
+//    }
 }

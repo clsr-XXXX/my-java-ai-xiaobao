@@ -9,9 +9,9 @@ import static dev.langchain4j.service.spring.AiServiceWiringMode.EXPLICIT;
 
 @AiService(
         wiringMode = EXPLICIT,
-        chatMemoryProvider = "chatMemoryProviderXiaoZhi")
-public interface XiaoZhiAgent {
+        chatMemoryProvider = "chatMemoryProviderXiaoBao")
+public interface XiaoBaoAgent {
 
-    @SystemMessage(fromResource = "xiaozhi-prompt.txt")
+    @SystemMessage(fromResource = "xiaobao-prompt.txt")
     String chat(@MemoryId Long memoryId, @UserMessage String userMessage);
 }

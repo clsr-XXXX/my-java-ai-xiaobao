@@ -25,7 +25,7 @@ public class MongoChatMemoryStore implements ChatMemoryStore {
     public List<ChatMessage> getMessages(Object memoryId) {
         Criteria criteria = Criteria.where("memoryId").is(memoryId);
         Query query = new Query(criteria);
-        ChatMessages chatMessages = (ChatMessages) mongoTemplate.findOne(query, ChatMessage.class);
+        ChatMessages chatMessages = mongoTemplate.findOne(query, ChatMessages.class);
         if (chatMessages == null) {
             return null;
         }
