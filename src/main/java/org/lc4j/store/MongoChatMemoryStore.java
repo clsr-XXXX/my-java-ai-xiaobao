@@ -13,6 +13,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -27,7 +28,7 @@ public class MongoChatMemoryStore implements ChatMemoryStore {
         Query query = new Query(criteria);
         ChatMessages chatMessages = mongoTemplate.findOne(query, ChatMessages.class);
         if (chatMessages == null) {
-            return null;
+            return new ArrayList<>();
         }
         String contentJson = chatMessages.getContent();
         return ChatMessageDeserializer.messagesFromJson(contentJson);
@@ -39,14 +40,14 @@ public class MongoChatMemoryStore implements ChatMemoryStore {
         Query query = new Query(criteria);
         Update update = new Update();
         update.set("messages", ChatMessageSerializer.messagesToJson(list));
-        mongoTemplate.updateFirst(query, update, ChatMessage.class);
+        mongoTemplate.updateFirst(query, update, ChatMessages.class);
     }
 
     @Override
     public void deleteMessages(Object memoryId) {
         Criteria criteria = Criteria.where("memoryId").is(memoryId);
         Query query = new Query(criteria);
-        mongoTemplate.remove(query, ChatMessage.class);
+        mongoTemplate.remove(query, ChatMessages.class);
 
     }
 }
