@@ -12,7 +12,8 @@ import static dev.langchain4j.service.spring.AiServiceWiringMode.EXPLICIT;
         wiringMode = EXPLICIT,
         chatModel = "qwenChatModel",  // 用 DashScope 自动创建的 bean
         chatMemoryProvider = "chatMemoryProviderXiaoBao",
-        tools = "appointmentTools" )
+        tools = "appointmentTools",
+        contentRetriever = "contentRetrieverXiaoBaoPincone")
 
 public interface XiaoBaoAgent {
 

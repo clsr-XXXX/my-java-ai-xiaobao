@@ -23,3 +23,6 @@ langchain4j:
       chat-model:
         api-key: ${langchain4j.community.dashscope.chat-model.api-key}
         model-name: qwen-max
+      embedding-model:
+        api-key: ${langchain4j.community.dashscope.chat-model.api-key}
+        model-name: text-embedding-v3
