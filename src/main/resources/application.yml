@@ -12,7 +12,7 @@ spring:
       uri: mongodb://localhost/chat_memory_db
 
   datasource:
-    url: jdbc:mysql://127.0.0.1:3306/hmdp?useSSL=false&serverTimezone=UTC
+    url: jdbc:mysql://127.0.0.1:3306/xiaobao?useSSL=false&serverTimezone=UTC
     username: root
     driver-class-name: com.mysql.cj.jdbc.Driver
     password: ${spring.datasource.password}
