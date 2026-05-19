@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>小包对话</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f5f7fb;
+            color: #1f2937;
+            font-family: Arial, "Microsoft YaHei", sans-serif;
+        }
+
+        .chat {
+            width: min(720px, calc(100vw - 32px));
+            height: min(720px, calc(100vh - 32px));
+            display: flex;
+            flex-direction: column;
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            box-shadow: 0 12px 36px rgba(31, 41, 55, 0.12);
+            overflow: hidden;
+        }
+
+        .header {
+            padding: 18px 20px;
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .messages {
+            flex: 1;
+            padding: 18px;
+            overflow-y: auto;
+            background: #fafafa;
+        }
+
+        .message {
+            max-width: 82%;
+            margin-bottom: 12px;
+            padding: 10px 12px;
+            border-radius: 8px;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        .user {
+            margin-left: auto;
+            background: #2563eb;
+            color: #ffffff;
+        }
+
+        .assistant {
+            margin-right: auto;
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+        }
+
+        .form {
+            display: flex;
+            gap: 10px;
+            padding: 14px;
+            border-top: 1px solid #e5e7eb;
+            background: #ffffff;
+        }
+
+        input {
+            flex: 1;
+            min-width: 0;
+            height: 42px;
+            padding: 0 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 15px;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+        }
+
+        button {
+            width: 86px;
+            height: 42px;
+            border: 0;
+            border-radius: 6px;
+            background: #2563eb;
+            color: #ffffff;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        button:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+<main class="chat">
+    <div class="header">小包对话</div>
+    <section id="messages" class="messages">
+        <div class="message assistant">你好，我是小包。请输入你的问题。</div>
+    </section>
+    <form id="form" class="form">
+        <input id="message" type="text" autocomplete="off" placeholder="输入消息..." required>
+        <button id="send" type="submit">发送</button>
+    </form>
+</main>
+
+<script>
+    const memoryId = Date.now();
+    const form = document.getElementById('form');
+    const input = document.getElementById('message');
+    const button = document.getElementById('send');
+    const messages = document.getElementById('messages');
+
+    function addMessage(text, type) {
+        const item = document.createElement('div');
+        item.className = `message ${type}`;
+        item.textContent = text;
+        messages.appendChild(item);
+        messages.scrollTop = messages.scrollHeight;
+        return item;
+    }
+
+    form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const text = input.value.trim();
+        if (!text) {
+            return;
+        }
+
+        addMessage(text, 'user');
+        input.value = '';
+        button.disabled = true;
+        const loading = addMessage('回复中...', 'assistant');
+
+        try {
+            const response = await fetch('/api/chat', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    memoryId,
+                    message: text
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error(`请求失败：${response.status}`);
+            }
+
+            loading.textContent = await response.text();
+        } catch (error) {
+            loading.textContent = error.message || '请求失败，请检查后端服务。';
+        } finally {
+            button.disabled = false;
+            input.focus();
+        }
+    });
+</script>
+</body>
+</html>
